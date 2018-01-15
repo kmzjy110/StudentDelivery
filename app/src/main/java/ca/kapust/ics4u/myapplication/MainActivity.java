@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Manually displaying the first fragment - one time only
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.frame_layout, DeliveryRequestsFragment.newInstance());
+        transaction.replace(R.id.frame_layout, RequestOrderFragment.newInstance());
         transaction.commit();
 
         bottomNavigationView.setOnNavigationItemSelectedListener
