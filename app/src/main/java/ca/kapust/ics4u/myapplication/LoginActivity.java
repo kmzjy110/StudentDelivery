@@ -30,6 +30,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import java.io.IOException;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,13 +57,17 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
-    private UserLoginTask mAuthTask = null;
+    //private UserLoginTask mAuthTask = null;
 
     // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    private String defaultIp = "kapust.ca";
+    private int defaultPort= 25505;
+    NetworkingActivity socket = new NetworkingActivity(defaultIp, defaultPort);
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,17 +162,17 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
 
     private void attemptAction(boolean isLogin) {
-        if (mAuthTask != null) {
-            return;
-        }
+        //if (mAuthTask != null) {
+         //   return;
+        //}
 
         // Reset errors.
         mEmailView.setError(null);
         mPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
-        String email = mEmailView.getText().toString();
-        String password = mPasswordView.getText().toString();
+        final String email = mEmailView.getText().toString();
+        final String password = mPasswordView.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
@@ -191,8 +204,44 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // perform the user login attempt.
             showProgress(true);
             if(isLogin){
-            mAuthTask = new UserLoginTask(email, password);
-            mAuthTask.execute((Void)null);}
+
+                socket.setClientCallback(new NetworkingActivity.ClientCallback () {
+                    @Override
+                    public void onMessage(String message) {
+                        if(message.equals("login")){
+                            //run necessary code to login
+                                startActivity(new Intent(LoginActivity.this,MainActivity.class));
+                        }else if(message.equals("fail")){
+                            //run necessary code to on fail
+                            mPasswordView.setError(getString(R.string.error_incorrect_password));
+                            mPasswordView.requestFocus();
+                        }else{
+                            //error code
+                        }
+                        socket.disconnect();
+                        showProgress(false);
+                    }
+
+                    @Override
+                    public void onConnect(Socket socketS) {
+                        socket.send(""+email+","+password);
+
+                    }
+
+                    @Override
+                    public void onDisconnect(Socket socket, String message) {
+                    message=message;
+                        showProgress(false);
+                    }
+                    @Override
+                    public void onConnectError(Socket socket, String message) {
+                        message=message;
+                        showProgress(false);
+                    }
+                });
+
+                socket.connect();
+            }
             else{
 
 
@@ -333,8 +382,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
      */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+    /*public class UserLoginTask extends AsyncTask<String[], Void, Void> {
 
+        private String Content;
+        private String Error = null;
         private final String mEmail;
         private final String mPassword;
 
@@ -344,18 +395,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
 
         @Override
-        protected Boolean doInBackground(Void... params) {
+        protected Boolean doInBackground(String[]... para) {
             // TODO: attempt authentication against a network service.
-
-            try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
-            }
-
-            if(!mEmail.equals("kmzwg@icloud.com"))return false;
-            else return true;
 
 
         }
@@ -396,19 +437,18 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             try {
                 // Simulate network access.
                 Thread.sleep(2000);
+
             } catch (InterruptedException e) {
                 return false;
             }
 
            if(!mEmail.equals("kmzwg@icloud.com"))return false;
             else return true;
-
-
         }
 
         @Override
         protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
+            //mAuthTask = null;
             showProgress(false);
 
             if (success) {
@@ -421,9 +461,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         @Override
         protected void onCancelled() {
-            mAuthTask = null;
+            //mAuthTask = null;
             showProgress(false);
         }
-    }
+    }*/
 }
 
