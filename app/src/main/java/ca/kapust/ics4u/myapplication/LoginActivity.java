@@ -89,7 +89,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mEmailRegisterButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                attemptAction(false);
+                Intent registerIntent =new Intent(LoginActivity.this,RegisterActivity.class);
+                startActivity(registerIntent);
             }
         });
 
@@ -347,12 +348,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
 
-            try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
-            }
 
             if(!mEmail.equals("kmzwg@icloud.com"))return false;
             else return true;
@@ -366,7 +361,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(false);
 
             if (success) {
-                startActivity(new Intent(LoginActivity.this,MainActivity.class));
+                Intent mainActivity =new Intent(LoginActivity.this,MainActivity.class);
+                mainActivity.putExtra(MainActivity.CURRENT_USER_INDICATOR,mEmail);
+                startActivity(mainActivity);
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();
@@ -393,13 +390,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
 
-            try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
-            }
-
            if(!mEmail.equals("kmzwg@icloud.com"))return false;
             else return true;
 
@@ -412,7 +402,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(false);
 
             if (success) {
-                startActivity(new Intent(LoginActivity.this,MainActivity.class));
+                Intent mainActivity =new Intent(LoginActivity.this,MainActivity.class);
+                mainActivity.putExtra(MainActivity.CURRENT_USER_INDICATOR,mEmail);
+                startActivity(mainActivity);
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();

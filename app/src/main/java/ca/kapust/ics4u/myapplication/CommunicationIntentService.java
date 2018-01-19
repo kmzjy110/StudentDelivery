@@ -40,6 +40,7 @@ public class CommunicationIntentService extends IntentService {
             broadcastIntent.putExtra(ORDER_INDICATOR, "Hunan Beef");
             broadcastIntent.putExtra(COST_INDICATOR, "$10");
             broadcastIntent.putExtra(TIP_INDICATOR, "$1");
+            //
 
             sendBroadcast(broadcastIntent);
 
