@@ -30,17 +30,24 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
-import java.net.Socket;
+import java.io.InputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.ProtocolException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
+
+import io.socket.client.IO;
+import io.socket.client.Socket;
+import io.socket.emitter.Emitter;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -57,16 +64,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
-    //private UserLoginTask mAuthTask = null;
-
+    private Socket socket;
     // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
-    private String defaultIp = "kapust.ca";
-    private int defaultPort= 25505;
-    NetworkingActivity socket = new NetworkingActivity(defaultIp, defaultPort);
+    private String defaultIp = "http://www.kapust.ca";
+    //private int defaultPort= 6666;
+    //NetworkingActivity socket = new NetworkingActivity(defaultIp, defaultPort);
 
 
     @Override
@@ -162,10 +168,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
 
     private void attemptAction(boolean isLogin) {
-        //if (mAuthTask != null) {
-         //   return;
-        //}
-
         // Reset errors.
         mEmailView.setError(null);
         mPasswordView.setError(null);
@@ -202,44 +204,59 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
-            showProgress(true);
+            //showProgress(true);
             if(isLogin){
+                IO.Options opts = new IO.Options();
+                opts.forceNew = true;
+                //opts.reconnection = true;
+                //opts.reconnectionAttempts=5;
+                //opts.reconnectionDelay = 5;
+                //opts.query = "auth_token=" + authToken;
+                try {
+                    socket = IO.socket("http://www.kapust.ca", opts);
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                }
+                socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
 
-                socket.setClientCallback(new NetworkingActivity.ClientCallback () {
                     @Override
-                    public void onMessage(String message) {
-                        if(message.equals("login")){
-                            //run necessary code to login
-                                startActivity(new Intent(LoginActivity.this,MainActivity.class));
-                        }else if(message.equals("fail")){
-                            //run necessary code to on fail
-                            mPasswordView.setError(getString(R.string.error_incorrect_password));
-                            mPasswordView.requestFocus();
-                        }else{
-                            //error code
+                    public void call(Object... args) {
+                        JSONObject data = new JSONObject();
+                        try {
+                            data.put("email",email);
+                            data.put("password",password);
+                            socket.emit("login", data);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                        socket.disconnect();
-                        showProgress(false);
                     }
 
-                    @Override
-                    public void onConnect(Socket socketS) {
-                        socket.send(""+email+","+password);
-
-                    }
+                }).on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
 
                     @Override
-                    public void onDisconnect(Socket socket, String message) {
-                    message=message;
-                        showProgress(false);
-                    }
-                    @Override
-                    public void onConnectError(Socket socket, String message) {
-                        message=message;
-                        showProgress(false);
-                    }
+                    public void call(Object... args) {}
+
                 });
+                socket.on("success", new Emitter.Listener() {
+                    @Override
+                    public void call(Object... args) {
+                        //Run login code here
+                        startActivity(new Intent(LoginActivity.this,MainActivity.class));
+                        socket.disconnect();
+                    }
 
+                });
+                socket.on("fail", new Emitter.Listener() {
+                    @Override
+                    public void call(Object... args) {
+                        //Run login code here
+                        //showProgress(false);
+                        //mPasswordView.setError(getString(R.string.error_incorrect_password));
+                        //mPasswordView.requestFocus();
+                        socket.disconnect();
+                    }
+
+                });
                 socket.connect();
             }
             else{
@@ -378,92 +395,5 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         int IS_PRIMARY = 1;
     }
 
-    /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
-     */
-    /*public class UserLoginTask extends AsyncTask<String[], Void, Void> {
-
-        private String Content;
-        private String Error = null;
-        private final String mEmail;
-        private final String mPassword;
-
-        UserLoginTask(String email, String password) {
-            mEmail = email;
-            mPassword = password;
-        }
-
-        @Override
-        protected Boolean doInBackground(String[]... para) {
-            // TODO: attempt authentication against a network service.
-
-
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
-            showProgress(false);
-
-            if (success) {
-                startActivity(new Intent(LoginActivity.this,MainActivity.class));
-            } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            mAuthTask = null;
-            showProgress(false);
-        }
-    }
-    public class UserRegisterTask extends AsyncTask<Void, Void, Boolean> {
-
-        private final String mEmail;
-        private final String mPassword;
-
-        UserRegisterTask(String email, String password) {
-            mEmail = email;
-            mPassword = password;
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-
-            try {
-                // Simulate network access.
-                Thread.sleep(2000);
-
-            } catch (InterruptedException e) {
-                return false;
-            }
-
-           if(!mEmail.equals("kmzwg@icloud.com"))return false;
-            else return true;
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            //mAuthTask = null;
-            showProgress(false);
-
-            if (success) {
-                startActivity(new Intent(LoginActivity.this,MainActivity.class));
-            } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            //mAuthTask = null;
-            showProgress(false);
-        }
-    }*/
 }
 
