@@ -70,9 +70,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
-    private String defaultIp = "http://www.kapust.ca";
-    //private int defaultPort= 6666;
-    //NetworkingActivity socket = new NetworkingActivity(defaultIp, defaultPort);
+    static String defaultIp = "http://www.kapust.ca";
 
 
     @Override
@@ -214,7 +212,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 //opts.reconnectionDelay = 5;
                 //opts.query = "auth_token=" + authToken;
                 try {
-                    socket = IO.socket("http://www.kapust.ca", opts);
+                    socket = IO.socket(defaultIp, opts);
                 } catch (URISyntaxException e) {
                     e.printStackTrace();
                 }
