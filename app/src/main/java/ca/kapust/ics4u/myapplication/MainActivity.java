@@ -26,9 +26,9 @@ public class MainActivity extends AppCompatActivity {
     private ResponseReceiver receiver;
     public static final String CURRENT_USER_INDICATOR = "current_user";
     public String currentUser;
-    public final RequestOrderFragment requestOrderFragment = RequestOrderFragment.newInstance();
-    public final BeADelivererFragment beADelivererFragment = BeADelivererFragment.newInstance();
-    public final DeliveryRequestsFragment deliveryRequestsFragment = DeliveryRequestsFragment.newInstance();
+    public  RequestOrderFragment requestOrderFragment = RequestOrderFragment.newInstance();
+    public  BeADelivererFragment beADelivererFragment = BeADelivererFragment.newInstance();
+    public  DeliveryRequestsFragment deliveryRequestsFragment = DeliveryRequestsFragment.newInstance();
     public static boolean executedService=false;
     public static final int DELIVERY_ACCEPTED_ACTION = 279;
     public static final int DELIVERY_RECEIVED_ACTION = 280;
@@ -80,18 +80,24 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-    public void sendNotification(View view,int action) {
+    public void sendNotification(int action) {
 
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this);
 
         //Create the intent that’ll fire when the user taps the notification//
-
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+/*
+        Intent resultIntent = new Intent(this, MainActivity.class);
+        PendingIntent pendingIntent =
+                PendingIntent.getActivity(
+                        this,
+                        0,
+                        resultIntent,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                );
 
         mBuilder.setContentIntent(pendingIntent);
-
+*/
         mBuilder.setSmallIcon(R.drawable.ic_notifications_black_24dp);
         if(action==DELIVERY_ACCEPTED_ACTION){
 
@@ -110,5 +116,6 @@ public class MainActivity extends AppCompatActivity {
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         mNotificationManager.notify(001, mBuilder.build());
+
     }
 }

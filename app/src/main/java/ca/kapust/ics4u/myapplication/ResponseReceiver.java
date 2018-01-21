@@ -46,12 +46,7 @@ public class ResponseReceiver extends BroadcastReceiver {
             s+="\n";
 
             current.deliveryRequestsFragment.updateData("AAAA",s);
-
-            current.deliveryRequestsFragment.removeData("AAAA",s);
-
-            current.deliveryRequestsFragment.updateData("123@123.com","2nd order detailORDER DETAILS AS ADDEDORDER DETAILS AS ADDEDORDER DETAILS AS ADDEDORDER DETAILS AS ADDEDORDER DETAILS AS ADDEDORDER DETAILS AS ADDEDORDER DETAILS AS ADDEDORDER DETAILS AS ADDEDv");
-
-
+            current.sendNotification(MainActivity.DELIVERY_RECEIVED_ACTION);
         }catch(Exception e){//when restrictedReceiverContext comes in and the type cast has errors, just ignore.
 
 

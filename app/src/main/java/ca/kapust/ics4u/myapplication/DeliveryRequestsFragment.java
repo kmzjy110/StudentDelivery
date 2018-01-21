@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,7 +49,7 @@ public class DeliveryRequestsFragment extends Fragment {
             
             TextView orderText = new TextView(getActivity());
             //assuming there is less than 100 orders at a time
-            int declineButtonId=i*declineButtonComputationFactor;
+            final int declineButtonId=i*declineButtonComputationFactor;
             int acceptButtonId=i*acceptButtonComputationFactor;
             
             orderText.setId(i);
@@ -66,6 +67,14 @@ public class DeliveryRequestsFragment extends Fragment {
             declineButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    int buttonIndex=view.getId();
+                    buttonIndex/=declineButtonComputationFactor;
+                   ids.remove(buttonIndex-minIndex);
+                   data.remove(buttonIndex-minIndex);
+                   maxIndex--;
+                    transactFragment(newInstance(),true);
+
+
                 }
             });
 
@@ -73,7 +82,8 @@ public class DeliveryRequestsFragment extends Fragment {
                 @Override
                 public void onClick(View view) {
                     int buttonIndex=view.getId();
-                    String id = data.get(buttonIndex-minIndex);
+                    buttonIndex/=acceptButtonComputationFactor;
+                    String id = ids.get(buttonIndex-minIndex);
                 }
             });
 
@@ -129,4 +139,15 @@ public class DeliveryRequestsFragment extends Fragment {
         maxIndex--;
 
     }
+    public void transactFragment(Fragment fragment, boolean reload) {
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        if (reload) {
+            getActivity().getSupportFragmentManager().popBackStack();
+        }
+        transaction.replace(R.id.frame_layout, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
+
 }

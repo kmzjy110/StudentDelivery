@@ -7,7 +7,7 @@ import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 
-public class NetworkingActivity {
+public class NetworkingHelper {
     private Socket socket;
     private OutputStream socketOutput;
     private BufferedReader socketInput;
@@ -15,7 +15,7 @@ public class NetworkingActivity {
     private int port;
     private ClientCallback listener=null;
 
-    public NetworkingActivity(String ip, int port){
+    public NetworkingHelper(String ip, int port){
         this.ip=ip;
         this.port=port;
     }

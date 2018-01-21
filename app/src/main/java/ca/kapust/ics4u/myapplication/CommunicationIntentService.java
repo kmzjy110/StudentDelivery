@@ -28,26 +28,34 @@ public class CommunicationIntentService extends IntentService {
     }
     @Override
     protected void onHandleIntent(Intent intent) {
-        //Establish Socket Connection
-        if(true){//replace with received delivery request
-            Intent broadcastIntent = new Intent();
-            broadcastIntent.setAction(ResponseReceiver.ACTION);
-            broadcastIntent.addCategory(Intent.CATEGORY_DEFAULT);
-            broadcastIntent.putExtra(NAME_INDICATOR, "Harry Zhao");
-            broadcastIntent.putExtra(USER_LOCATION_INDICATOR, "505 Pickering Crescent");
-            broadcastIntent.putExtra(RESTAURANT_NAME_INDICATOR, "Golden Dragon");
-            broadcastIntent.putExtra(RESTAURANT_LOCATION_INDICATOR, "504 Pickering Crescent");
-            broadcastIntent.putExtra(ORDER_INDICATOR, "Hunan Beef");
-            broadcastIntent.putExtra(COST_INDICATOR, "$10");
-            broadcastIntent.putExtra(TIP_INDICATOR, "$1");
-            //
+        try{
+            //Establish Socket Connection
+            if(true){//replace with received delivery request
 
-            sendBroadcast(broadcastIntent);
+                Thread.sleep(5000);
+                Intent broadcastIntent = new Intent();
+                broadcastIntent.setAction(ResponseReceiver.ACTION);
+                broadcastIntent.addCategory(Intent.CATEGORY_DEFAULT);
+                broadcastIntent.putExtra(NAME_INDICATOR, "Harry Zhao");
+                broadcastIntent.putExtra(USER_LOCATION_INDICATOR, "505 Pickering Crescent");
+                broadcastIntent.putExtra(RESTAURANT_NAME_INDICATOR, "Golden Dragon");
+                broadcastIntent.putExtra(RESTAURANT_LOCATION_INDICATOR, "504 Pickering Crescent");
+                broadcastIntent.putExtra(ORDER_INDICATOR, "Hunan Beef");
+                broadcastIntent.putExtra(COST_INDICATOR, "$10");
+                broadcastIntent.putExtra(TIP_INDICATOR, "$1");
+                //
 
-        }else if(true){//order taken
+                sendBroadcast(broadcastIntent);
 
+            }else if(true){//order taken
+
+
+            }
+
+        }catch(Exception e){
 
         }
+
 
     }
 

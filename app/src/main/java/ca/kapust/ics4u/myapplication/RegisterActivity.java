@@ -107,8 +107,10 @@ public class RegisterActivity extends AppCompatActivity {
         socket.on("success", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
+
+
                 //Run login code here
-                //startActivity(new Intent(LoginActivity.this,MainActivity.class));
+                startActivity(new Intent(RegisterActivity.this,LoginActivity.class));
                 
                 socket.disconnect();
             }
@@ -118,10 +120,10 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void call(Object... args) {
                 //Run login code here
-                //showProgress(false);
+                socket.disconnect();
                 //mPasswordView.setError(getString(R.string.error_incorrect_password));
                 //mPasswordView.requestFocus();
-                socket.disconnect();
+
             }
 
         });
