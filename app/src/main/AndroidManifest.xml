@@ -18,6 +18,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <receiver android:name=".ResponseReceiver">
+            <intent-filter>
+                <action android:name="order received"/>
+            </intent-filter>
+        </receiver>
+        <service
+            android:name=".CommunicationIntentService"
+            android:exported="false"/>
         <activity
             android:name=".LoginActivity"
             android:label="@string/app_name">
