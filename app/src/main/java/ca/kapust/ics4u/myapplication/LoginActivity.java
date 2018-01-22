@@ -109,6 +109,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             @Override
             public void onClick(View view) {
                 Intent registerIntent =new Intent(LoginActivity.this,RegisterActivity.class);
+
                 startActivity(registerIntent);
             }
         });
@@ -256,14 +257,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     @Override
                     public void call(Object... args) {
                         //Run login code here
-
-                        startActivity(new Intent(LoginActivity.this,MainActivity.class));
                         LoginActivity.this.runOnUiThread(new Runnable(){
                             @Override
                             public void run() {
                                 showProgress(false);
                             }});
+
                         socket.disconnect();
+                        MainActivity.currentUser=0;
+                        startActivity(new Intent(LoginActivity.this,MainActivity.class));
+
                     }
 
                 });

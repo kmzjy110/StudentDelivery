@@ -25,17 +25,21 @@ import ca.kapust.ics4u.myapplication.RequestOrderFragment;
 public class MainActivity extends AppCompatActivity {
     private ResponseReceiver receiver;
     public static final String CURRENT_USER_INDICATOR = "current_user";
-    public String currentUser;
+
+    public static final String ACTION_INDICATOR = "Action";
+    public static int currentUser;
     public  RequestOrderFragment requestOrderFragment = RequestOrderFragment.newInstance();
     public  BeADelivererFragment beADelivererFragment = BeADelivererFragment.newInstance();
     public  DeliveryRequestsFragment deliveryRequestsFragment = DeliveryRequestsFragment.newInstance();
     public static boolean executedService=false;
-    public static final int DELIVERY_ACCEPTED_ACTION = 279;
-    public static final int DELIVERY_RECEIVED_ACTION = 280;
+    public static boolean isDeliverer=false;
+    public static final String DELIVERY_ACCEPTED_ACTION = "Delivery Accepted";
+    public static final String DELIVERY_RECEIVED_ACTION = "Delivery Received";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        currentUser=getIntent().getStringExtra(CURRENT_USER_INDICATOR);
+
         setContentView(R.layout.activity_main);
         BottomNavigationView bottomNavigationView = (BottomNavigationView)
                 findViewById(R.id.navigation);
@@ -80,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-    public void sendNotification(int action) {
+    public void sendNotification(String action) {
 
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this);
@@ -99,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
         mBuilder.setContentIntent(pendingIntent);
 */
         mBuilder.setSmallIcon(R.drawable.ic_notifications_black_24dp);
-        if(action==DELIVERY_ACCEPTED_ACTION){
+        if(action.equals(DELIVERY_ACCEPTED_ACTION)){
 
             mBuilder.setContentTitle("Your delivery request have been accepted");
 
