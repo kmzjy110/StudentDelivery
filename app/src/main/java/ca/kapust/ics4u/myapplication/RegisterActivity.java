@@ -111,14 +111,14 @@ public class RegisterActivity extends AppCompatActivity {
         }
         if(!isPasswordValid(password)){
             reg=true;
-            mPasswordView.setError("Password Doesn't meet requirements");
+            mPasswordView.setError("Password doesn't meet requirements");
             mPasswordView.requestFocus();
-        }
+        }else{
         if(!password.equals(confirmPassword)){
             mConfirmPasswordView.setError("Passwords don't match");
             mConfirmPasswordView.requestFocus();
             reg=true;
-        }
+        }}
         if(!(email.contains("@")&&email.contains("."))){
             mEmail.setError("Not a valid email");
             mEmail.requestFocus();
