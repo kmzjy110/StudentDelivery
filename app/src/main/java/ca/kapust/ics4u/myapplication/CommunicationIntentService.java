@@ -18,7 +18,8 @@ public class CommunicationIntentService extends IntentService {
     public static final String ORDER_INDICATOR = "order";
     public static final String COST_INDICATOR="cost";
     public static final String TIP_INDICATOR = "tip";
-
+    public static final String PHONE_NUMBER_INDICATOR="phone number";
+    public static final String ID_INDICATOR="id";
     public CommunicationIntentService(){
         this(CommunicationIntentService.class.getName());
 
@@ -30,26 +31,37 @@ public class CommunicationIntentService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         try{
             //Establish Socket Connection
-            if(true){//replace with received delivery request
+            if(MainActivity.isDeliverer){
 
-                Thread.sleep(5000);
+                if(true){//replace with received delivery request
+                    //TODO: GET PHONE NUMBER OF THE PERSON MAKING THE REQUEST
+                    Intent broadcastIntent = new Intent();
+                    broadcastIntent.setAction(ResponseReceiver.ACTION);
+                    broadcastIntent.addCategory(Intent.CATEGORY_DEFAULT);
+                    broadcastIntent.putExtra(MainActivity.ACTION_INDICATOR,MainActivity.DELIVERY_RECEIVED_ACTION);
+                    broadcastIntent.putExtra(ID_INDICATOR,"GUIDGUIDGUID");
+                    broadcastIntent.putExtra(NAME_INDICATOR, "Harry Zhao");
+                    broadcastIntent.putExtra(USER_LOCATION_INDICATOR, "505 Pickering Crescent");
+                    broadcastIntent.putExtra(RESTAURANT_NAME_INDICATOR, "Golden Dragon");
+                    broadcastIntent.putExtra(RESTAURANT_LOCATION_INDICATOR, "504 Pickering Crescent");
+                    broadcastIntent.putExtra(ORDER_INDICATOR, "Hunan Beef");
+                    broadcastIntent.putExtra(COST_INDICATOR, "$10");
+                    broadcastIntent.putExtra(TIP_INDICATOR, "$1");
+                    broadcastIntent.putExtra(PHONE_NUMBER_INDICATOR,"4165555555");
+                    //
+
+                    sendBroadcast(broadcastIntent);
+
+                }
+
+            }
+            if(true){//order taken
+
                 Intent broadcastIntent = new Intent();
                 broadcastIntent.setAction(ResponseReceiver.ACTION);
                 broadcastIntent.addCategory(Intent.CATEGORY_DEFAULT);
-                broadcastIntent.putExtra(NAME_INDICATOR, "Harry Zhao");
-                broadcastIntent.putExtra(USER_LOCATION_INDICATOR, "505 Pickering Crescent");
-                broadcastIntent.putExtra(RESTAURANT_NAME_INDICATOR, "Golden Dragon");
-                broadcastIntent.putExtra(RESTAURANT_LOCATION_INDICATOR, "504 Pickering Crescent");
-                broadcastIntent.putExtra(ORDER_INDICATOR, "Hunan Beef");
-                broadcastIntent.putExtra(COST_INDICATOR, "$10");
-                broadcastIntent.putExtra(TIP_INDICATOR, "$1");
-                //
-
-                sendBroadcast(broadcastIntent);
-
-            }else if(true){//order taken
-
-
+                broadcastIntent.putExtra(MainActivity.ACTION_INDICATOR,MainActivity.DELIVERY_ACCEPTED_ACTION);
+                //TODO:get the phone number and name of the person taking the request and push that into notification
             }
 
         }catch(Exception e){

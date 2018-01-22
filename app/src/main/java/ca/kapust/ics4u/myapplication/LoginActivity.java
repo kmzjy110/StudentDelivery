@@ -109,6 +109,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             @Override
             public void onClick(View view) {
                 Intent registerIntent =new Intent(LoginActivity.this,RegisterActivity.class);
+
                 startActivity(registerIntent);
             }
         });
@@ -254,13 +255,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         //Run login code here
                         JSONObject data = (JSONObject)args[0];
                         try {
-                            String id = data.getString("id");
+                            final String id = data.getString("id");
 
                             LoginActivity.this.runOnUiThread(new Runnable() {
 
                                 @Override
                                 public void run() {
-                                    
+                                    MainActivity.currentUser=Integer.parseInt(id);
                                     showProgress(false);
                                 }
                             });
@@ -268,8 +269,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             e.printStackTrace();
                         }
                         socket.disconnect();
-                        startActivity(new Intent(LoginActivity.this,MainActivity.class));
 
+                        startActivity(new Intent(LoginActivity.this,MainActivity.class));
 
                     }
 

@@ -35,9 +35,14 @@ public class RequestOrderFragment extends Fragment {
         final ConstraintLayout layout = (ConstraintLayout) inflater.inflate(R.layout.request_order_fragment, container, false);
 
         Button requestButton = (Button)layout.findViewById(R.id.submit_button);
+        if(MainActivity.isDeliverer){
+            requestButton.setText("You cannot request orders when you are a deliverer.");
+            return layout;
+        }
         requestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 String ordererName=(String)((TextView)layout.findViewById(R.id.nameText)).getText();
                 String ordererLocation=(String)((TextView)layout.findViewById(R.id.locationText)).getText();
                 String restaurantLocation=(String)((TextView)layout.findViewById(R.id.restLocText)).getText();
@@ -47,7 +52,8 @@ public class RequestOrderFragment extends Fragment {
                 String tip=(String)((TextView)layout.findViewById(R.id.tipText)).getText();
 
                 //generate GUID for order
-                String id = UUID.randomUUID().toString();
+
+                //socket connection
                 if(!MainActivity.executedService){
 
                     Intent communication_service_intent = new Intent(getActivity(), CommunicationIntentService.class);

@@ -143,7 +143,7 @@ public class RegisterActivity extends AppCompatActivity {
                 JSONObject data = new JSONObject();
                 try {
                     data.put("email",email);
-                    data.put("password",password);
+                    data.put("password",LoginActivity.encryptPwd(password));
                     data.put("firstName",fName);
                     data.put("lastName",lName);
                     data.put("phoneNumber",phoneNumber);
