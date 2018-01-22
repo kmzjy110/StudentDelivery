@@ -261,16 +261,18 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                                 @Override
                                 public void run() {
-                                    MainActivity.currentUser=Integer.parseInt(id);
+
                                     showProgress(false);
                                 }
                             });
+                            socket.disconnect();
+
+                            startActivity(new Intent(LoginActivity.this,MainActivity.class));
+                            MainActivity.currentUser=Integer.parseInt(id);
                         }catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        socket.disconnect();
 
-                        startActivity(new Intent(LoginActivity.this,MainActivity.class));
 
                     }
 
