@@ -1,5 +1,6 @@
 package ca.kapust.ics4u.myapplication;
 
+import android.content.Intent;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -33,7 +34,7 @@ public class RequestOrderFragment extends Fragment {
                              Bundle savedInstanceState) {
         final ConstraintLayout layout = (ConstraintLayout) inflater.inflate(R.layout.request_order_fragment, container, false);
 
-        Button requestButton = (Button)layout.findViewById(R.id.email_sign_in_button);
+        Button requestButton = (Button)layout.findViewById(R.id.submit_button);
         requestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -45,6 +46,11 @@ public class RequestOrderFragment extends Fragment {
                 String cost=(String)((TextView)layout.findViewById(R.id.costText)).getText();
                 String tip=(String)((TextView)layout.findViewById(R.id.tipText)).getText();
                 String id = UUID.randomUUID().toString();
+                if(!MainActivity.executedService){
+
+                    Intent communication_service_intent = new Intent(getActivity(), CommunicationIntentService.class);
+                    getActivity().startService(communication_service_intent);
+                }
             }
         });
         return layout;
