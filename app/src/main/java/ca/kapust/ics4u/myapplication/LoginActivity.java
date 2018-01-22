@@ -256,14 +256,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     @Override
                     public void call(Object... args) {
                         //Run login code here
-
-                        startActivity(new Intent(LoginActivity.this,MainActivity.class));
                         LoginActivity.this.runOnUiThread(new Runnable(){
                             @Override
                             public void run() {
                                 showProgress(false);
                             }});
                         socket.disconnect();
+                        startActivity(new Intent(LoginActivity.this,MainActivity.class));
+
+
                     }
 
                 });
