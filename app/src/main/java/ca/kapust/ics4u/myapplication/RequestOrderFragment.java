@@ -45,6 +45,8 @@ public class RequestOrderFragment extends Fragment {
                 String order=(String)((TextView)layout.findViewById(R.id.orderText)).getText();
                 String cost=(String)((TextView)layout.findViewById(R.id.costText)).getText();
                 String tip=(String)((TextView)layout.findViewById(R.id.tipText)).getText();
+
+                //generate GUID for order
                 String id = UUID.randomUUID().toString();
                 if(!MainActivity.executedService){
 
