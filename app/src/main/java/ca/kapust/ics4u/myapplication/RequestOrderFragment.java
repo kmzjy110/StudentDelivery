@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.util.UUID;
 /**
  * Created by kmzwg on 1/11/2018.
  */
@@ -44,6 +45,7 @@ public class RequestOrderFragment extends Fragment {
                 String tip=(String)((TextView)layout.findViewById(R.id.tipText)).getText();
                 //generate GUID for order
 
+                String id = UUID.randomUUID().toString();
             }
         });
         return layout;
