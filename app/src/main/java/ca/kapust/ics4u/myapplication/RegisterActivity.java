@@ -131,12 +131,8 @@ public class RegisterActivity extends AppCompatActivity {
 
         IO.Options opts = new IO.Options();
         opts.forceNew = true;
-        //opts.reconnection = true;
-        //opts.reconnectionAttempts=5;
-        //opts.reconnectionDelay = 5;
-        //opts.query = "auth_token=" + authToken;
         try {
-            socket = IO.socket(LoginActivity.defaultIp, opts);
+            socket = IO.socket(NetworkHelper.defaultIp, opts);
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }

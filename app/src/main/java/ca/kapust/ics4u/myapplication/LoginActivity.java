@@ -72,7 +72,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
-    static String defaultIp = "http://www.kapust.ca";
+
 
 
     @Override
@@ -223,12 +223,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             if(isLogin){
                 IO.Options opts = new IO.Options();
                 opts.forceNew = true;
-                //opts.reconnection = true;
-                //opts.reconnectionAttempts=5;
-                //opts.reconnectionDelay = 5;
-                //opts.query = "auth_token=" + authToken;
                 try {
-                    socket = IO.socket(defaultIp, opts);
+                    socket = IO.socket(NetworkHelper.defaultIp, opts);
                 } catch (URISyntaxException e) {
                     e.printStackTrace();
                 }
@@ -256,11 +252,21 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     @Override
                     public void call(Object... args) {
                         //Run login code here
-                        LoginActivity.this.runOnUiThread(new Runnable(){
-                            @Override
-                            public void run() {
-                                showProgress(false);
-                            }});
+                        JSONObject data = (JSONObject)args[0];
+                        try {
+                            String id = data.getString("id");
+
+                            LoginActivity.this.runOnUiThread(new Runnable() {
+
+                                @Override
+                                public void run() {
+                                    
+                                    showProgress(false);
+                                }
+                            });
+                        }catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                         socket.disconnect();
                         startActivity(new Intent(LoginActivity.this,MainActivity.class));
 
