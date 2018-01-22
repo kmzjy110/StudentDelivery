@@ -37,10 +37,12 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
+import java.math.BigInteger;
 import java.net.HttpURLConnection;
 import java.net.ProtocolException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -164,7 +166,21 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * errors are presented and no actual login attempt is made.
      */
 
+    public static String encryptPwd(String source){
 
+
+        String md5 = null;
+        try {
+            MessageDigest mdEnc = MessageDigest.getInstance("MD5"); //Encryption algorithm
+            mdEnc.update(source.getBytes(), 0, source.length());
+            md5 = new BigInteger(1, mdEnc.digest()).toString(16); // Encrypted string
+        }
+        catch (Exception ex) {
+            return null;
+        }
+        return md5;
+
+    }
 
     private void attemptAction(boolean isLogin) {
         // Reset errors.
@@ -223,7 +239,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         JSONObject data = new JSONObject();
                         try {
                             data.put("email",email);
-                            data.put("password",password);
+                            data.put("password",encryptPwd(password));
                             socket.emit("login", data);
                         } catch (JSONException e) {
                             e.printStackTrace();
