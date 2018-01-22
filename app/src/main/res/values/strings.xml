@@ -19,4 +19,11 @@
     </string>
     <string name="title_activity_main">Student Delivery</string>
     <string name="title_activity_register">RegisterActivity</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="birthday_mm_dd_yyyy">Birthday (MM/DD/YYYY)</string>
+    <string name="register">Register</string>
+    <string name="password_should_contain_at_least_6_characters_and_one_of_each_uppercase_lowercase_and_number">Password should contain at least 6 characters and one of each uppercase, lowercase and number</string>
 </resources>
