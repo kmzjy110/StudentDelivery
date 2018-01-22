@@ -43,6 +43,7 @@ public class RequestOrderFragment extends Fragment {
                 String cost=(String)((TextView)layout.findViewById(R.id.costText)).getText();
                 String tip=(String)((TextView)layout.findViewById(R.id.tipText)).getText();
                 //generate GUID for order
+
             }
         });
         return layout;
