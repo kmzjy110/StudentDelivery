@@ -85,25 +85,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         populateAutoComplete();
 
         mPasswordView = (EditText) findViewById(R.id.password);
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
-                    attemptAction(true);
-                    return true;
-                }
-                return false;
-            }
-        });
 
+        //get the button and set the listener for when the user clicks it: attempt signing in
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                attemptAction(true);
+                attemptAction();
             }
         });
-
+        //get the register button and set the listener to switch to the register page
         Button mEmailRegisterButton = (Button)findViewById(R.id.email_register_button);
         mEmailRegisterButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -113,18 +104,18 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 startActivity(registerIntent);
             }
         });
-
+        //initialize global variable
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
     }
-
+    //auto generated code
     private void populateAutoComplete() {
         if (!mayRequestContacts()) {
             return;
         }
         getLoaderManager().initLoader(0, null, this);
     }
-
+    //auto generated code
     private boolean mayRequestContacts() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             return true;
@@ -166,7 +157,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * If there are form errors (invalid email, missing fields, etc.), the
      * errors are presented and no actual login attempt is made.
      */
-
+    /**
+     * encrypt the password
+     * @param source the source password to be encrypted
+     * @return
+     */
     public static String encryptPwd(String source){
 
 
@@ -183,7 +178,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     }
 
-    private void attemptAction(boolean isLogin) {
+    /**
+     * try login
+     *
+     */
+
+    private void attemptAction() {
         // Reset errors.
         mEmailView.setError(null);
         mPasswordView.setError(null);
@@ -195,9 +195,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         boolean cancel = false;
         View focusView = null;
 
-        // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordView.setError("The password does not match the requirements. You must have at least one number, one uppercase letter, and one lowercase letter.");
+        // Check if the user entered a password.
+        if (!TextUtils.isEmpty(password)) {
+            mPasswordView.setError("You need a password to login.");
             focusView = mPasswordView;
             cancel = true;
         }
@@ -221,7 +221,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            if(isLogin){
+
                 IO.Options opts = new IO.Options();
                 opts.forceNew = true;
                 try {
@@ -252,11 +252,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 socket.on("success", new Emitter.Listener() {
                     @Override
                     public void call(Object... args) {
-                        //Run login code here
+
                         JSONObject data = (JSONObject)args[0];
                         try {
                             final String id = data.getString("id");
-
+                            //turn off show progress
                             LoginActivity.this.runOnUiThread(new Runnable() {
 
                                 @Override
@@ -266,7 +266,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                 }
                             });
                             socket.disconnect();
-
+                            //go into mainactivity
                             startActivity(new Intent(LoginActivity.this,MainActivity.class));
                             MainActivity.currentUser=Integer.parseInt(id);
                         }catch (JSONException e) {
@@ -293,11 +293,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                 });
                 socket.connect();
-            }
-            else{
 
 
-            }
         }
     }
     /**
@@ -335,44 +332,17 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
         }
     }
+
+    /**
+     * simple mechanism to check for the validity of the email
+     * @param email the email to be checked
+     * @return
+     */
     private boolean isEmailValid(String email) {
 
         return email.contains("@");
     }
 
-    private boolean isPasswordValid(String password) {
-
-        boolean containsUpperCase=false;
-        boolean containsLowerCase=false;
-        boolean containsNumber=false;
-        boolean lengthReq=password.length() >= 6;
-        for(int i=0;i<password.length();i++){
-            for (char u=65;u<=90;u++){
-                if(password.charAt(i)==u){
-                    containsUpperCase=true;
-                    break;
-
-                }
-            }
-            for (char l=97;l<=122;l++){
-                if(password.charAt(i)==l){
-                    containsLowerCase=true;
-                    break;
-
-                }
-            }
-            for (char n=48;n<=57;n++){
-                if(password.charAt(i)==n){
-                    containsNumber=true;
-                    break;
-
-                }
-            }
-
-        }
-
-        return containsUpperCase &&containsLowerCase &&containsNumber &&lengthReq;
-    }
 
 
     @Override
@@ -392,6 +362,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 ContactsContract.Contacts.Data.IS_PRIMARY + " DESC");
     }
 
+    //auto generated
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
         List<String> emails = new ArrayList<>();
@@ -403,12 +374,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         addEmailsToAutoComplete(emails);
     }
-
+    //auto generated
     @Override
     public void onLoaderReset(Loader<Cursor> cursorLoader) {
 
     }
-
+    //auto generated
     private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
         //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
         ArrayAdapter<String> adapter =
@@ -418,7 +389,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mEmailView.setAdapter(adapter);
     }
 
-
+    //auto generated
     private interface ProfileQuery {
         String[] PROJECTION = {
                 ContactsContract.CommonDataKinds.Email.ADDRESS,

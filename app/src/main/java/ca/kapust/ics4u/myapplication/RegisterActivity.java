@@ -37,6 +37,7 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         current=this;
+        //initialize all variables
         mEmail = (EditText) findViewById(R.id.email);
         mFirstName = (EditText) findViewById(R.id.fName);
         mLastName = (EditText) findViewById(R.id.lName);
@@ -45,6 +46,7 @@ public class RegisterActivity extends AppCompatActivity {
         mPasswordView = (EditText) findViewById(R.id.password);
         mConfirmPasswordView = (EditText) findViewById(R.id.confirmPassword);
 
+        //set the listener to attmpt registration
         Button mEmailRegisterButton = (Button)findViewById(R.id.email_register_button);
         mEmailRegisterButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,6 +57,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     protected void attemptRegistration(){
+        //get all values
         final String fName = mFirstName.getText().toString();
         final String lName = mLastName.getText().toString();
         final String password = mPasswordView.getText().toString();
@@ -63,7 +66,6 @@ public class RegisterActivity extends AppCompatActivity {
         String phoneNum = mPhoneNum.getText().toString();
         String bday = mBirthday.getText().toString();
 
-        //NEED TO DO CHECKS HERE HARRY
         boolean reg = false;
         int counter =0;
         String temp="";
@@ -76,6 +78,7 @@ public class RegisterActivity extends AppCompatActivity {
                 }
             }
         }
+        //checking for validity of all data
         final String phoneNumber = temp;
         if(counter!=10&&counter!=11){
             mPhoneNum.setError("Not a valid phone number");
@@ -191,8 +194,7 @@ public class RegisterActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 socket.disconnect();
-                //mPasswordView.setError(getString(R.string.error_incorrect_password));
-                //mPasswordView.requestFocus();
+
 
             }
 
@@ -200,6 +202,12 @@ public class RegisterActivity extends AppCompatActivity {
         socket.connect();
         }
     }
+
+    /**
+     * check if the password matches the standard for the app
+     * @param password the password to be checked
+     * @return
+     */
     private boolean isPasswordValid(String password) {
 
         boolean containsUpperCase=false;

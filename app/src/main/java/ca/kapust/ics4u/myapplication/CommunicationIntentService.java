@@ -50,7 +50,7 @@ public class CommunicationIntentService extends IntentService {
                     broadcastIntent.putExtra(PHONE_NUMBER_INDICATOR,"4165555555");
                     //
 
-                    sendBroadcast(broadcastIntent);
+                   // sendBroadcast(broadcastIntent);
 
                 }else{
                     intent.getStringExtra(CommunicationIntentService.RESTAURANT_LOCATION_INDICATOR);
@@ -66,6 +66,8 @@ public class CommunicationIntentService extends IntentService {
                 broadcastIntent.setAction(ResponseReceiver.ACTION);
                 broadcastIntent.addCategory(Intent.CATEGORY_DEFAULT);
                 broadcastIntent.putExtra(MainActivity.ACTION_INDICATOR,MainActivity.DELIVERY_ACCEPTED_ACTION);
+                //broadcast the information and send the data back to the main activity
+                sendBroadcast(broadcastIntent);
                 //TODO:get the phone number and name of the person taking the request and push that into notification
             }
 
