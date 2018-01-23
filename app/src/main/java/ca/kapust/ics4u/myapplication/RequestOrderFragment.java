@@ -42,17 +42,14 @@ public class RequestOrderFragment extends Fragment {
         requestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String ordererLocation= ((TextView)layout.findViewById(R.id.locationText)).getText().toString();
+                String restaurantLocation=((TextView)layout.findViewById(R.id.restLocText)).getText().toString();
+                String restaurantName=((TextView)layout.findViewById(R.id.restNameText)).getText().toString();
+                String order=((TextView)layout.findViewById(R.id.orderText)).getText().toString();
+                String cost=((TextView)layout.findViewById(R.id.costText)).getText().toString();
+                String tip=((TextView)layout.findViewById(R.id.tipText)).getText().toString();
 
-                String ordererName=(String)((TextView)layout.findViewById(R.id.nameText)).getText();
-                String ordererLocation=(String)((TextView)layout.findViewById(R.id.locationText)).getText();
-                String restaurantLocation=(String)((TextView)layout.findViewById(R.id.restLocText)).getText();
-                String restaurantName=(String)((TextView)layout.findViewById(R.id.restNameText)).getText();
-                String order=(String)((TextView)layout.findViewById(R.id.orderText)).getText();
-                String cost=(String)((TextView)layout.findViewById(R.id.costText)).getText();
-                String tip=(String)((TextView)layout.findViewById(R.id.tipText)).getText();
-
-                //generate GUID for order
-
+                NetworkHelper.hell = new NetworkHelper(ordererLocation,restaurantLocation,restaurantName,order,cost,tip);
                 //socket connection
                 if(!MainActivity.executedService){
 

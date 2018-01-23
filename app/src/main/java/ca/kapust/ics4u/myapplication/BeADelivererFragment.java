@@ -39,8 +39,12 @@ public class BeADelivererFragment extends Fragment {
 
             @Override
             public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
-
+                if(!isChecked){
+                    NetworkHelper.hell.Destroy();
+                    NetworkHelper.hell=null;
+                }
                 if(isChecked){
+                    NetworkHelper.hell = new NetworkHelper();
                     if(!MainActivity.executedService){
                        MainActivity.executedService=true;
                        MainActivity.isDeliverer=isChecked;
