@@ -44,7 +44,6 @@ public class BeADelivererFragment extends Fragment {
                     NetworkHelper.hell=null;
                 }
                 if(isChecked){
-                    NetworkHelper.hell = new NetworkHelper();
                     if(!MainActivity.executedService){
                        MainActivity.executedService=true;
                        MainActivity.isDeliverer=isChecked;

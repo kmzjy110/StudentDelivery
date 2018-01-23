@@ -31,9 +31,9 @@ public class CommunicationIntentService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         try{
             //Establish Socket Connection
+            NetworkHelper hell;
             if(MainActivity.isDeliverer){
-
-                if(true){//replace with received delivery request
+                    hell = new NetworkHelper();
                     //TODO: GET PHONE NUMBER OF THE PERSON MAKING THE REQUEST
                     Intent broadcastIntent = new Intent();
                     broadcastIntent.setAction(ResponseReceiver.ACTION);
@@ -52,9 +52,13 @@ public class CommunicationIntentService extends IntentService {
 
                     sendBroadcast(broadcastIntent);
 
+                }else{
+                    hell = new NetworkHelper();
                 }
 
-            }
+
+
+
             if(true){//order taken
 
                 Intent broadcastIntent = new Intent();
