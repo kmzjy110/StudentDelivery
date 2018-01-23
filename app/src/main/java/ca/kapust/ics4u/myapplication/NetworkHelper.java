@@ -61,6 +61,9 @@ public class NetworkHelper {
                         String error = data.getString("error");
                         //Run code for when there is a delivery available
 
+
+
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

@@ -48,6 +48,7 @@ public class BeADelivererFragment extends Fragment {
                        MainActivity.executedService=true;
                        MainActivity.isDeliverer=isChecked;
                     Intent communication_service_intent = new Intent(getActivity(), CommunicationIntentService.class);
+
                     getActivity().startService(communication_service_intent);}
                 }
 

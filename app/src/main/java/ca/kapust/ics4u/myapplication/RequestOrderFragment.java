@@ -49,11 +49,12 @@ public class RequestOrderFragment extends Fragment {
                 String cost=((TextView)layout.findViewById(R.id.costText)).getText().toString();
                 String tip=((TextView)layout.findViewById(R.id.tipText)).getText().toString();
 
-                NetworkHelper.hell = new NetworkHelper(ordererLocation,restaurantLocation,restaurantName,order,cost,tip);
+
                 //socket connection
                 if(!MainActivity.executedService){
 
                     Intent communication_service_intent = new Intent(getActivity(), CommunicationIntentService.class);
+                    communication_service_intent.putExtra(CommunicationIntentService.RESTAURANT_LOCATION_INDICATOR,ordererLocation);
                     getActivity().startService(communication_service_intent);
                 }
             }
