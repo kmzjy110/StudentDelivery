@@ -35,6 +35,7 @@ public class CommunicationIntentService extends IntentService {
             if(MainActivity.isDeliverer){
                     hell = new NetworkHelper();
                     //TODO: GET PHONE NUMBER OF THE PERSON MAKING THE REQUEST
+                    //put all the data in the intent and send the data to the receiver
                     Intent broadcastIntent = new Intent();
                     broadcastIntent.setAction(ResponseReceiver.ACTION);
                     broadcastIntent.addCategory(Intent.CATEGORY_DEFAULT);
@@ -65,6 +66,7 @@ public class CommunicationIntentService extends IntentService {
                 Intent broadcastIntent = new Intent();
                 broadcastIntent.setAction(ResponseReceiver.ACTION);
                 broadcastIntent.addCategory(Intent.CATEGORY_DEFAULT);
+                //indicate that a delivery has been accepted
                 broadcastIntent.putExtra(MainActivity.ACTION_INDICATOR,MainActivity.DELIVERY_ACCEPTED_ACTION);
                 //broadcast the information and send the data back to the main activity
                 sendBroadcast(broadcastIntent);
