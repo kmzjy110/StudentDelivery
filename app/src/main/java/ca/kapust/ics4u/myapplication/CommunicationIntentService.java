@@ -53,7 +53,7 @@ public class CommunicationIntentService extends IntentService {
                     sendBroadcast(broadcastIntent);
 
                 }else{
-                    hell = new NetworkHelper();
+                    hell = new NetworkHelper(ordererLocation,restaurantLocation,restaurantName,order,cost,tip);
                 }
 
 
