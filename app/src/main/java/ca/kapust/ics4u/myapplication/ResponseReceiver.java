@@ -31,6 +31,10 @@ public class ResponseReceiver extends BroadcastReceiver {
             //when data is received
             MainActivity current = (MainActivity) context;
             View v = current.deliveryRequestsFragment.mView;
+            if(intent.getStringExtra(MainActivity.ACTION_INDICATOR).equals(MainActivity.DELIVERY_SENT_ACTION)){
+                current.sendNotification(MainActivity.DELIVERY_SENT_ACTION,"Delivery Sent.");
+
+            }
             if(intent.getStringExtra(MainActivity.ACTION_INDICATOR).equals(MainActivity.DELIVERY_RECEIVED_ACTION)){
                 String s=  "Name: "+intent.getStringExtra(NAME_INDICATOR);
                 s+="\n";

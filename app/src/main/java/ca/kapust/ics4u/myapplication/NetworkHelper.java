@@ -109,7 +109,7 @@ public class NetworkHelper {
                     JSONObject data = (JSONObject)args[0];
                     try {
                         String error = data.getString("error");
-
+                        view.sentOrder();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

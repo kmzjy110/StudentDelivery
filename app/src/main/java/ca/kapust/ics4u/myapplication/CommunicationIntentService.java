@@ -49,6 +49,12 @@ public class CommunicationIntentService extends IntentService {
 
 
     }
+    public void sentOrder(){
+
+        Intent broadcastIntent = new Intent();
+        broadcastIntent.putExtra(MainActivity.ACTION_INDICATOR,MainActivity.DELIVERY_SENT_ACTION);
+        sendBroadcast(broadcastIntent);
+    }
     public void createDeli(JSONObject data) {
         try {
 

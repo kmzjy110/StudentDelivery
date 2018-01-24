@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     //string indicators for action (used in notification)
     public static final String DELIVERY_ACCEPTED_ACTION = "Delivery Accepted";
     public static final String DELIVERY_RECEIVED_ACTION = "Delivery Received";
+    public static final String DELIVERY_SENT_ACTION="Delivery Sent";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,10 +106,12 @@ public class MainActivity extends AppCompatActivity {
 
             mBuilder.setContentTitle("Your delivery request have been accepted");
 
-        }else{
+        }else if(action.equals(DELIVERY_RECEIVED_ACTION)){
 
             mBuilder.setContentTitle("You have received a delivery order.");
 
+        }else{
+            mBuilder.setContentTitle("Your delivery has been sent.");
         }
         mBuilder.setContentText(details);
 
