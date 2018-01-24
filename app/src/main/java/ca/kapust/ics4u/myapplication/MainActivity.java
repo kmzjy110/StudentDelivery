@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         mBuilder.setSmallIcon(R.drawable.ic_notifications_black_24dp);
-        //set the text
+        //set the text for the notifications
         if(action.equals(DELIVERY_ACCEPTED_ACTION)){
 
             mBuilder.setContentTitle("Your delivery request have been accepted");
@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
             mBuilder.setContentTitle("You have received a delivery order.");
 
         }else if (action.equals(DELIVERY_SENT_ACTION)){
-            mBuilder.setContentTitle("Your delivery has been sent.");
+            mBuilder.setContentTitle("Delivery sent.");
         }
         mBuilder.setContentText(details);
 

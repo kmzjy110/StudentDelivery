@@ -106,14 +106,9 @@ public class NetworkHelper {
             socket.on("success", new Emitter.Listener() {
                 @Override
                 public void call(Object... args) {
-                    JSONObject data = (JSONObject)args[0];
-                    try {
-                        String error = data.getString("error");
-                        view.sentOrder();
 
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+
+
                     //socket.disconnect();
                     //mPasswordView.setError(getString(R.string.error_incorrect_password));
                     //mPasswordView.requestFocus();
@@ -196,13 +191,8 @@ public class NetworkHelper {
             socket.on("success", new Emitter.Listener() {
                 @Override
                 public void call(Object... args) {
-                    JSONObject data = (JSONObject)args[0];
-                    try {
-                        String error = data.getString("error");
+                    view.sentOrder();
 
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
                     //socket.disconnect();
                 }
             });

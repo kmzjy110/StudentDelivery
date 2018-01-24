@@ -52,6 +52,8 @@ public class CommunicationIntentService extends IntentService {
     public void sentOrder(){
 
         Intent broadcastIntent = new Intent();
+        broadcastIntent.setAction(ResponseReceiver.ACTION);
+        broadcastIntent.addCategory(Intent.CATEGORY_DEFAULT);
         broadcastIntent.putExtra(MainActivity.ACTION_INDICATOR,MainActivity.DELIVERY_SENT_ACTION);
         sendBroadcast(broadcastIntent);
     }

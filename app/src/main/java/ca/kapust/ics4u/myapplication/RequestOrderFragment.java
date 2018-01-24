@@ -29,12 +29,12 @@ public class RequestOrderFragment extends Fragment {
 
     }
     public void clear(){
-       ((TextView)layout.findViewById(R.id.locationText)).clearComposingText();
-        ((TextView)layout.findViewById(R.id.restLocText)).clearComposingText();
-       ((TextView)layout.findViewById(R.id.restNameText)).clearComposingText();
-       ((TextView)layout.findViewById(R.id.orderText)).clearComposingText();
-        ((TextView)layout.findViewById(R.id.costText)).clearComposingText();
-        ((TextView)layout.findViewById(R.id.tipText)).clearComposingText();
+       ((TextView)layout.findViewById(R.id.locationText)).setText("");
+        ((TextView)layout.findViewById(R.id.restLocText)).setText("");
+       ((TextView)layout.findViewById(R.id.restNameText)).setText("");
+       ((TextView)layout.findViewById(R.id.orderText)).setText("");
+        ((TextView)layout.findViewById(R.id.costText)).setText("");
+        ((TextView)layout.findViewById(R.id.tipText)).setText("");
 
 
     }
@@ -58,7 +58,13 @@ public class RequestOrderFragment extends Fragment {
                 String cost=((TextView)layout.findViewById(R.id.costText)).getText().toString();
                 String tip=((TextView)layout.findViewById(R.id.tipText)).getText().toString();
 
-
+                ((TextView)layout.findViewById(R.id.locationText)).setText("");
+                ((TextView)layout.findViewById(R.id.restLocText)).setText("");
+                ((TextView)layout.findViewById(R.id.restNameText)).setText("");
+                ((TextView)layout.findViewById(R.id.orderText)).setText("");
+                ((TextView)layout.findViewById(R.id.costText)).setText("");
+                ((TextView)layout.findViewById(R.id.tipText)).setText("");
+                if(ordererLocation.isEmpty()||restaurantLocation.isEmpty()||restaurantName.isEmpty()||order.isEmpty()||cost.isEmpty()||tip.isEmpty())return;
                 //socket connection
                 if(!MainActivity.executedService){
 

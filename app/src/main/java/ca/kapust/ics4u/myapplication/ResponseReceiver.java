@@ -32,7 +32,6 @@ public class ResponseReceiver extends BroadcastReceiver {
             MainActivity current = (MainActivity) context;
             View v = current.deliveryRequestsFragment.mView;
             if(intent.getStringExtra(MainActivity.ACTION_INDICATOR).equals(MainActivity.DELIVERY_SENT_ACTION)){
-                current.requestOrderFragment.clear();
                 current.sendNotification(MainActivity.DELIVERY_SENT_ACTION,"Delivery Sent.");
 
             }
