@@ -28,7 +28,7 @@ public class ResponseReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         try{
-
+            //when data is received
             MainActivity current = (MainActivity) context;
             View v = current.deliveryRequestsFragment.mView;
             if(intent.getStringExtra(MainActivity.ACTION_INDICATOR).equals(MainActivity.DELIVERY_RECEIVED_ACTION)){
@@ -49,20 +49,19 @@ public class ResponseReceiver extends BroadcastReceiver {
                 s+="Phone Number:  "+intent.getStringExtra(PHONE_NUMBER_INDICATOR);
                 s+="\n";
 
+                //update the data in all the delivery requests
                 current.deliveryRequestsFragment.updateData(intent.getStringExtra(ID_INDICATOR),s);
+                //send notification
                 current.sendNotification(MainActivity.DELIVERY_RECEIVED_ACTION);
 
             }else{
-
+                //if it's not receiving a delivery, it's that a delivery has been accepted
                 current.sendNotification(MainActivity.DELIVERY_ACCEPTED_ACTION);
 
 
             }
 
         }catch(Exception e){//when restrictedReceiverContext comes in and the type cast has errors, just ignore.
-
-
-
         }
     }
 }

@@ -28,11 +28,14 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String ACTION_INDICATOR = "Action";
     public static int currentUser;
+    //initialize variables for data access and for not creating a new instance every time the user launches into a fragment
     public  RequestOrderFragment requestOrderFragment = RequestOrderFragment.newInstance();
     public  BeADelivererFragment beADelivererFragment = BeADelivererFragment.newInstance();
     public  DeliveryRequestsFragment deliveryRequestsFragment = DeliveryRequestsFragment.newInstance();
+    //indicator for only launching the service once
     public static boolean executedService=false;
     public static boolean isDeliverer=false;
+    //string indicators for action (used in notification)
     public static final String DELIVERY_ACCEPTED_ACTION = "Delivery Accepted";
     public static final String DELIVERY_RECEIVED_ACTION = "Delivery Received";
 
@@ -47,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
         //register broadcast receiver for the background location update service
         IntentFilter filter = new IntentFilter(ResponseReceiver.ACTION);
         filter.addCategory(Intent.CATEGORY_DEFAULT);
+        //register the broadcast receiver for the service
         receiver = new ResponseReceiver();
         registerReceiver(receiver, filter);
 
@@ -57,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
+        //mechanism for switching between the fragments
         bottomNavigationView.setOnNavigationItemSelectedListener
                 (new BottomNavigationView.OnNavigationItemSelectedListener() {
                     @Override
@@ -84,25 +88,19 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+    /**
+     * send a notification for action
+     * @param action the type of action for the notification (delivery accepted or received, based on the variables on top)
+     */
     public void sendNotification(String action) {
 
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this);
 
-        //Create the intent that’ll fire when the user taps the notification//
-/*
-        Intent resultIntent = new Intent(this, MainActivity.class);
-        PendingIntent pendingIntent =
-                PendingIntent.getActivity(
-                        this,
-                        0,
-                        resultIntent,
-                        PendingIntent.FLAG_UPDATE_CURRENT
-                );
 
-        mBuilder.setContentIntent(pendingIntent);
-*/
         mBuilder.setSmallIcon(R.drawable.ic_notifications_black_24dp);
+        //set the text
         if(action.equals(DELIVERY_ACCEPTED_ACTION)){
 
             mBuilder.setContentTitle("Your delivery request have been accepted");
@@ -118,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
         NotificationManager mNotificationManager =
 
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
+        //send notification
         mNotificationManager.notify(001, mBuilder.build());
 
     }

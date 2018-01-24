@@ -33,7 +33,7 @@ public class BeADelivererFragment extends Fragment {
         RelativeLayout relativeLayout = (RelativeLayout)inflater.inflate(R.layout.be_a_deliverer_fragment, container, false);
 
         Switch switch1 = (Switch)relativeLayout.findViewById(R.id.switch1);
-
+        //set listener for the switch
         Switch.OnCheckedChangeListener listener = new Switch.OnCheckedChangeListener(){
 
             @Override
@@ -43,6 +43,7 @@ public class BeADelivererFragment extends Fragment {
                     NetworkHelper.hell=null;
                 }
                 if(isChecked){
+                    //launch the service if it has not been launched
                     if(!MainActivity.executedService){
                        MainActivity.executedService=true;
                        MainActivity.isDeliverer=isChecked;
