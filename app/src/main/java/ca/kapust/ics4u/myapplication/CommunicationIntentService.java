@@ -38,23 +38,7 @@ public class CommunicationIntentService extends IntentService {
             if(MainActivity.isDeliverer){
                     NetworkHelper.hell = new NetworkHelper(this);
                     //TODO: GET PHONE NUMBER OF THE PERSON MAKING THE REQUEST
-                    //put all the data in the intent and send the data to the receiver
-                    /*Intent broadcastIntent = new Intent();
-                    broadcastIntent.setAction(ResponseReceiver.ACTION);
-                    broadcastIntent.addCategory(Intent.CATEGORY_DEFAULT);
-                    broadcastIntent.putExtra(MainActivity.ACTION_INDICATOR,MainActivity.DELIVERY_RECEIVED_ACTION);
-                    broadcastIntent.putExtra(ID_INDICATOR,"GUIDGUIDGUID");
-                    broadcastIntent.putExtra(NAME_INDICATOR, "Harry Zhao");
-                    broadcastIntent.putExtra(USER_LOCATION_INDICATOR, "505 Pickering Crescent");
-                    broadcastIntent.putExtra(RESTAURANT_NAME_INDICATOR, "Golden Dragon");
-                    broadcastIntent.putExtra(RESTAURANT_LOCATION_INDICATOR, "504 Pickering Crescent");
-                    broadcastIntent.putExtra(ORDER_INDICATOR, "Hunan Beef");
-                    broadcastIntent.putExtra(COST_INDICATOR, "$10");
-                    broadcastIntent.putExtra(TIP_INDICATOR, "$1");
-                    broadcastIntent.putExtra(PHONE_NUMBER_INDICATOR,"4165555555");
-                    //
 
-                   // sendBroadcast(broadcastIntent);/*/
 
                 }else{
                     String restaurantLocation = intent.getStringExtra(CommunicationIntentService.RESTAURANT_LOCATION_INDICATOR);
@@ -79,6 +63,7 @@ public class CommunicationIntentService extends IntentService {
                 //broadcast the information and send the data back to the main activity
                 sendBroadcast(broadcastIntent);
                 //TODO:get the phone number and name of the person taking the request and push that into notification
+
             }
 
         }catch(Exception e){
@@ -90,7 +75,7 @@ public class CommunicationIntentService extends IntentService {
     public void createDeli(JSONObject data) {
         try {
 
-
+            //put all the data in the intent and send the data to the receiver
             Intent broadcastIntent = new Intent();
             broadcastIntent.setAction(ResponseReceiver.ACTION);
             broadcastIntent.addCategory(Intent.CATEGORY_DEFAULT);

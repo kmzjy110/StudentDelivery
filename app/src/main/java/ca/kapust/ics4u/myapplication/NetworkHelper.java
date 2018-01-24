@@ -76,6 +76,7 @@ public class NetworkHelper {
                     try {
                         if(data.getString("id").equals(""+MainActivity.currentUser)){
                             //TODO When show a notification
+
                         }
 
                     } catch (JSONException e) {
@@ -93,6 +94,8 @@ public class NetworkHelper {
                     try {
                         //TODO demonstrate that there is no more order
 
+
+                        data.getString("id");
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -165,7 +168,13 @@ public class NetworkHelper {
                 @Override
                 public void call(Object... args) {
 
-
+                    JSONObject data = (JSONObject)args[0];
+                    try {
+                        String phoneNumber = data.getString("phoneNumber");
+                        String name = data.getString("name");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                     //Run login code here
 
                     socket.disconnect();
