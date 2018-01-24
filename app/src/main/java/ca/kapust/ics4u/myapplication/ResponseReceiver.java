@@ -31,6 +31,10 @@ public class ResponseReceiver extends BroadcastReceiver {
             //when data is received
             MainActivity current = (MainActivity) context;
             View v = current.deliveryRequestsFragment.mView;
+            if(intent.getStringExtra(MainActivity.ACTION_INDICATOR).equals(MainActivity.DELIVERY_SENT_ACTION)){
+                current.sendNotification(MainActivity.DELIVERY_SENT_ACTION,"Delivery Sent.");
+
+            }
             if(intent.getStringExtra(MainActivity.ACTION_INDICATOR).equals(MainActivity.DELIVERY_RECEIVED_ACTION)){
                 String s=  "Name: "+intent.getStringExtra(NAME_INDICATOR);
                 s+="\n";
@@ -52,11 +56,11 @@ public class ResponseReceiver extends BroadcastReceiver {
                 //update the data in all the delivery requests
                 current.deliveryRequestsFragment.updateData(intent.getStringExtra(ID_INDICATOR),s);
                 //send notification
-                current.sendNotification(MainActivity.DELIVERY_RECEIVED_ACTION);
+                current.sendNotification(MainActivity.DELIVERY_RECEIVED_ACTION, "Enter app for details");
 
             }else{
                 //if it's not receiving a delivery, it's that a delivery has been accepted
-                current.sendNotification(MainActivity.DELIVERY_ACCEPTED_ACTION);
+                current.sendNotification(MainActivity.DELIVERY_ACCEPTED_ACTION,intent.getStringExtra("Details"));
 
 
             }
