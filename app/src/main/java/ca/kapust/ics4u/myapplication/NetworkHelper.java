@@ -110,6 +110,7 @@ public class NetworkHelper {
                     try {
                         String error = data.getString("error");
                         view.sentOrder();
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

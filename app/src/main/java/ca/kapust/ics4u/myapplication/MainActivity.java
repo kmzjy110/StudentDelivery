@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
 
             mBuilder.setContentTitle("You have received a delivery order.");
 
-        }else{
+        }else if (action.equals(DELIVERY_SENT_ACTION)){
             mBuilder.setContentTitle("Your delivery has been sent.");
         }
         mBuilder.setContentText(details);

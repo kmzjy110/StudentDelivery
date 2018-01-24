@@ -22,13 +22,22 @@ public class RequestOrderFragment extends Fragment {
         RequestOrderFragment fragment = new RequestOrderFragment();
         return fragment;
     }
-
+    View layout;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
     }
+    public void clear(){
+       ((TextView)layout.findViewById(R.id.locationText)).clearComposingText();
+        ((TextView)layout.findViewById(R.id.restLocText)).clearComposingText();
+       ((TextView)layout.findViewById(R.id.restNameText)).clearComposingText();
+       ((TextView)layout.findViewById(R.id.orderText)).clearComposingText();
+        ((TextView)layout.findViewById(R.id.costText)).clearComposingText();
+        ((TextView)layout.findViewById(R.id.tipText)).clearComposingText();
 
+
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -65,6 +74,7 @@ public class RequestOrderFragment extends Fragment {
                 }
             }
         });
+        this.layout=layout;
         return layout;
     }
 }
