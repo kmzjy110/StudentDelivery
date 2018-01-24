@@ -85,6 +85,7 @@ public class DeliveryRequestsFragment extends Fragment {
                     buttonIndex/=acceptButtonComputationFactor;
                     String id = ids.get(buttonIndex-minIndex);
                     //TODO:establish socket connection, send in user name and phone number
+                    NetworkHelper.hell.accept(Integer.parseInt(id));
                 }
             });
 

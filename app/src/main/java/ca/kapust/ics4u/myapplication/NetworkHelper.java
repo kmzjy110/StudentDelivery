@@ -19,14 +19,17 @@ import io.socket.emitter.Emitter;
 public class NetworkHelper {
     static NetworkHelper hell;
     static String defaultIp = "http://www.kapust.ca";
+    CommunicationIntentService view;
     //reason = 1: Sent a Request await delivery
     //reason = 2: Is a deliverer
     int reason;
     Socket socket;
-    public NetworkHelper(){
+
+    public NetworkHelper(final CommunicationIntentService view){
+        this.view = view;
         IO.Options opts = new IO.Options();
         opts.forceNew = true;
-        //opts.reconnection = true;
+        opts.reconnection = false;
         //opts.reconnectionAttempts=5;
         //opts.reconnectionDelay = 5;
         //opts.query = "auth_token=" + authToken;
@@ -56,21 +59,44 @@ public class NetworkHelper {
             socket.on("found", new Emitter.Listener() {
                 @Override
                 public void call(Object... args) {
+
                     JSONObject data = (JSONObject)args[0];
                     try {
-                        String error = data.getString("error");
-                        //Run code for when there is a delivery available
+                        view.createDeli(data.getJSONObject("data"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
 
-
-
+            });
+            socket.on("orderConfirmed", new Emitter.Listener() {
+                @Override
+                public void call(Object... args) {
+                    JSONObject data = (JSONObject)args[0];
+                    try {
+                        if(data.getString("id").equals(""+MainActivity.currentUser)){
+                            //TODO When show a notification
+                        }
 
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
 
-                    //Run login code here
 
-                    //socket.disconnect();
+                }
+
+            });
+            socket.on("orderAlreadyTaken", new Emitter.Listener() {
+                @Override
+                public void call(Object... args) {
+                    JSONObject data = (JSONObject)args[0];
+                    try {
+                        //TODO demonstrate that there is no more order
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
                 }
 
             });
@@ -97,7 +123,8 @@ public class NetworkHelper {
         }
 
     }
-    public NetworkHelper(final String ordererLocation ,final String restaurantLocation,final String restaurantName,final String order,final String cost,final String tip){
+    public NetworkHelper(CommunicationIntentService view, final String ordererLocation ,final String restaurantLocation,final String restaurantName,final String order,final String cost,final String tip){
+        this.view = view;
         reason=2;
         IO.Options opts = new IO.Options();
         opts.forceNew = true;
@@ -177,7 +204,18 @@ public class NetworkHelper {
         }
     }
 
-    public void Destroy(){
+    public void accept(int orderId){
+        JSONObject data = new JSONObject();
+        try {
+            data.put("id",MainActivity.currentUser);
+            data.put("orderId",orderId);
+            socket.emit("acceptDelivery", data);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void destroy(){
         JSONObject data = new JSONObject();
         try {
             data.put("id",MainActivity.currentUser);

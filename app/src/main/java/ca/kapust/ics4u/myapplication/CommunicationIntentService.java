@@ -6,6 +6,9 @@ import android.os.Handler;
 import android.os.Looper;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * Created by kmzwg on 1/15/2018.
  */
@@ -31,30 +34,20 @@ public class CommunicationIntentService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         try{
             //Establish Socket Connection
-            NetworkHelper hell;
-            if(MainActivity.isDeliverer){
-                    hell = new NetworkHelper();
-                    //TODO: GET PHONE NUMBER OF THE PERSON MAKING THE REQUEST
-                    Intent broadcastIntent = new Intent();
-                    broadcastIntent.setAction(ResponseReceiver.ACTION);
-                    broadcastIntent.addCategory(Intent.CATEGORY_DEFAULT);
-                    broadcastIntent.putExtra(MainActivity.ACTION_INDICATOR,MainActivity.DELIVERY_RECEIVED_ACTION);
-                    broadcastIntent.putExtra(ID_INDICATOR,"GUIDGUIDGUID");
-                    broadcastIntent.putExtra(NAME_INDICATOR, "Harry Zhao");
-                    broadcastIntent.putExtra(USER_LOCATION_INDICATOR, "505 Pickering Crescent");
-                    broadcastIntent.putExtra(RESTAURANT_NAME_INDICATOR, "Golden Dragon");
-                    broadcastIntent.putExtra(RESTAURANT_LOCATION_INDICATOR, "504 Pickering Crescent");
-                    broadcastIntent.putExtra(ORDER_INDICATOR, "Hunan Beef");
-                    broadcastIntent.putExtra(COST_INDICATOR, "$10");
-                    broadcastIntent.putExtra(TIP_INDICATOR, "$1");
-                    broadcastIntent.putExtra(PHONE_NUMBER_INDICATOR,"4165555555");
-                    //
 
-                    sendBroadcast(broadcastIntent);
+            if(MainActivity.isDeliverer){
+                    NetworkHelper.hell = new NetworkHelper(this);
+                    //TODO: GET PHONE NUMBER OF THE PERSON MAKING THE REQUEST
+
 
                 }else{
-                    intent.getStringExtra(CommunicationIntentService.RESTAURANT_LOCATION_INDICATOR);
-                  //  hell = new NetworkHelper(ordererLocation,restaurantLocation,restaurantName,order,cost,tip);
+                    String restaurantLocation = intent.getStringExtra(CommunicationIntentService.RESTAURANT_LOCATION_INDICATOR);
+                    String ordererLocation = intent.getStringExtra(CommunicationIntentService.USER_LOCATION_INDICATOR);
+                    String restaurantName = intent.getStringExtra(CommunicationIntentService.RESTAURANT_NAME_INDICATOR);
+                    String order = intent.getStringExtra(CommunicationIntentService.ORDER_INDICATOR);
+                    String cost = intent.getStringExtra(CommunicationIntentService.COST_INDICATOR);
+                    String tip = intent.getStringExtra(CommunicationIntentService.TIP_INDICATOR);
+                    NetworkHelper.hell = new NetworkHelper(this,ordererLocation,restaurantLocation,restaurantName,order,cost,tip);
                 }
 
 
@@ -75,7 +68,27 @@ public class CommunicationIntentService extends IntentService {
 
 
     }
+    public void createDeli(JSONObject data) {
+        try {
 
 
+            Intent broadcastIntent = new Intent();
+            broadcastIntent.setAction(ResponseReceiver.ACTION);
+            broadcastIntent.addCategory(Intent.CATEGORY_DEFAULT);
+            broadcastIntent.putExtra(MainActivity.ACTION_INDICATOR, MainActivity.DELIVERY_RECEIVED_ACTION);
+            broadcastIntent.putExtra(ID_INDICATOR, data.getString("orderId"));
+            broadcastIntent.putExtra(NAME_INDICATOR, data.getString("requesterFName")+" "+data.getString("requesterLName"));
+            broadcastIntent.putExtra(USER_LOCATION_INDICATOR, data.getString("ordererLocation"));
+            broadcastIntent.putExtra(RESTAURANT_NAME_INDICATOR, data.getString("restaurantName"));
+            broadcastIntent.putExtra(RESTAURANT_LOCATION_INDICATOR, data.getString("restaurantLocation"));
+            broadcastIntent.putExtra(ORDER_INDICATOR, data.getString("order"));
+            broadcastIntent.putExtra(COST_INDICATOR, data.getString("cost"));
+            broadcastIntent.putExtra(TIP_INDICATOR, data.getString("tip"));
+            broadcastIntent.putExtra(PHONE_NUMBER_INDICATOR, data.getString("phoneNumber"));
+            sendBroadcast(broadcastIntent);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
+    }
 }

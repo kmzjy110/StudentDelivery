@@ -54,7 +54,13 @@ public class RequestOrderFragment extends Fragment {
                 if(!MainActivity.executedService){
 
                     Intent communication_service_intent = new Intent(getActivity(), CommunicationIntentService.class);
-                    communication_service_intent.putExtra(CommunicationIntentService.RESTAURANT_LOCATION_INDICATOR,ordererLocation);
+                    communication_service_intent.putExtra(CommunicationIntentService.USER_LOCATION_INDICATOR,ordererLocation);
+                    communication_service_intent.putExtra(CommunicationIntentService.RESTAURANT_LOCATION_INDICATOR,restaurantLocation);
+                    communication_service_intent.putExtra(CommunicationIntentService.RESTAURANT_NAME_INDICATOR,restaurantName);
+                    communication_service_intent.putExtra(CommunicationIntentService.ORDER_INDICATOR,order);
+                    communication_service_intent.putExtra(CommunicationIntentService.COST_INDICATOR,cost);
+                    communication_service_intent.putExtra(CommunicationIntentService.TIP_INDICATOR,tip);
+
                     getActivity().startService(communication_service_intent);
                 }
             }
