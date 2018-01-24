@@ -39,7 +39,7 @@ public class CommunicationIntentService extends IntentService {
                     NetworkHelper.hell = new NetworkHelper(this);
                     //TODO: GET PHONE NUMBER OF THE PERSON MAKING THE REQUEST
                     //put all the data in the intent and send the data to the receiver
-                    Intent broadcastIntent = new Intent();
+                    /*Intent broadcastIntent = new Intent();
                     broadcastIntent.setAction(ResponseReceiver.ACTION);
                     broadcastIntent.addCategory(Intent.CATEGORY_DEFAULT);
                     broadcastIntent.putExtra(MainActivity.ACTION_INDICATOR,MainActivity.DELIVERY_RECEIVED_ACTION);
@@ -54,7 +54,7 @@ public class CommunicationIntentService extends IntentService {
                     broadcastIntent.putExtra(PHONE_NUMBER_INDICATOR,"4165555555");
                     //
 
-                   // sendBroadcast(broadcastIntent);
+                   // sendBroadcast(broadcastIntent);/*/
 
                 }else{
                     String restaurantLocation = intent.getStringExtra(CommunicationIntentService.RESTAURANT_LOCATION_INDICATOR);
