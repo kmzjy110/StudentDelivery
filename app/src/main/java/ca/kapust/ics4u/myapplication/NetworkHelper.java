@@ -170,16 +170,19 @@ public class NetworkHelper {
 
                     JSONObject data = (JSONObject)args[0];
                     try {
-                        String phoneNumber = data.getString("phoneNumber");
-                        String name = data.getString("name");
-                        Intent broadcastIntent = new Intent();
-                        broadcastIntent.setAction(ResponseReceiver.ACTION);
-                        broadcastIntent.addCategory(Intent.CATEGORY_DEFAULT);
-                        //indicate that a delivery has been accepted
-                        broadcastIntent.putExtra(MainActivity.ACTION_INDICATOR,MainActivity.DELIVERY_ACCEPTED_ACTION);
-                        //broadcast the information and send the data back to the main activity
-                        broadcastIntent.putExtra("Details","Name:"+name+" Phone:"+phoneNumber);
-                        view.sendBroadcast(broadcastIntent);
+                        if(data.getString("id").equals(""+MainActivity.currentUser)){
+                            //TODO When show a notification
+                            String phoneNumber = data.getString("phoneNumber");
+                            String name = data.getString("name");
+                            Intent broadcastIntent = new Intent();
+                            broadcastIntent.setAction(ResponseReceiver.ACTION);
+                            broadcastIntent.addCategory(Intent.CATEGORY_DEFAULT);
+                            //indicate that a delivery has been accepted
+                            broadcastIntent.putExtra(MainActivity.ACTION_INDICATOR,MainActivity.DELIVERY_ACCEPTED_ACTION);
+                            //broadcast the information and send the data back to the main activity
+                            broadcastIntent.putExtra("Details","Name:"+name+" Phone:"+phoneNumber);
+                            view.sendBroadcast(broadcastIntent);
+                        }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
