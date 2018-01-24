@@ -170,8 +170,11 @@ public class NetworkHelper {
 
                     JSONObject data = (JSONObject)args[0];
                     try {
-                        String phoneNumber = data.getString("phoneNumber");
-                        String name = data.getString("name");
+                        if(data.getString("id").equals(""+MainActivity.currentUser)){
+                            //TODO When show a notification
+                            String phoneNumber = data.getString("phoneNumber");
+                            String name = data.getString("name");
+                        }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
