@@ -52,11 +52,11 @@ public class ResponseReceiver extends BroadcastReceiver {
                 //update the data in all the delivery requests
                 current.deliveryRequestsFragment.updateData(intent.getStringExtra(ID_INDICATOR),s);
                 //send notification
-                current.sendNotification(MainActivity.DELIVERY_RECEIVED_ACTION);
+                current.sendNotification(MainActivity.DELIVERY_RECEIVED_ACTION, "Enter app for details");
 
             }else{
                 //if it's not receiving a delivery, it's that a delivery has been accepted
-                current.sendNotification(MainActivity.DELIVERY_ACCEPTED_ACTION);
+                current.sendNotification(MainActivity.DELIVERY_ACCEPTED_ACTION,intent.getStringExtra("Details"));
 
 
             }

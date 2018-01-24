@@ -126,7 +126,7 @@ public class NetworkHelper {
         }
 
     }
-    public NetworkHelper(CommunicationIntentService view, final String ordererLocation ,final String restaurantLocation,final String restaurantName,final String order,final String cost,final String tip){
+    public NetworkHelper(final CommunicationIntentService view, final String ordererLocation , final String restaurantLocation, final String restaurantName, final String order, final String cost, final String tip){
         this.view = view;
         reason=2;
         IO.Options opts = new IO.Options();
@@ -172,6 +172,14 @@ public class NetworkHelper {
                     try {
                         String phoneNumber = data.getString("phoneNumber");
                         String name = data.getString("name");
+                        Intent broadcastIntent = new Intent();
+                        broadcastIntent.setAction(ResponseReceiver.ACTION);
+                        broadcastIntent.addCategory(Intent.CATEGORY_DEFAULT);
+                        //indicate that a delivery has been accepted
+                        broadcastIntent.putExtra(MainActivity.ACTION_INDICATOR,MainActivity.DELIVERY_ACCEPTED_ACTION);
+                        //broadcast the information and send the data back to the main activity
+                        broadcastIntent.putExtra("Details","Name:"+name+" Phone:"+phoneNumber);
+                        view.sendBroadcast(broadcastIntent);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

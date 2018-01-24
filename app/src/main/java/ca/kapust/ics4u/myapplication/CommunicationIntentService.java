@@ -32,43 +32,20 @@ public class CommunicationIntentService extends IntentService {
     }
     @Override
     protected void onHandleIntent(Intent intent) {
-        try{
-            //Establish Socket Connection
 
-            if(MainActivity.isDeliverer){
-                    NetworkHelper.hell = new NetworkHelper(this);
-                    //TODO: GET PHONE NUMBER OF THE PERSON MAKING THE REQUEST
+            if (MainActivity.isDeliverer) {
+                NetworkHelper.hell = new NetworkHelper(this);
+                //TODO: GET PHONE NUMBER OF THE PERSON MAKING THE REQUEST
 
-
-                }else{
-                    String restaurantLocation = intent.getStringExtra(CommunicationIntentService.RESTAURANT_LOCATION_INDICATOR);
-                    String ordererLocation = intent.getStringExtra(CommunicationIntentService.USER_LOCATION_INDICATOR);
-                    String restaurantName = intent.getStringExtra(CommunicationIntentService.RESTAURANT_NAME_INDICATOR);
-                    String order = intent.getStringExtra(CommunicationIntentService.ORDER_INDICATOR);
-                    String cost = intent.getStringExtra(CommunicationIntentService.COST_INDICATOR);
-                    String tip = intent.getStringExtra(CommunicationIntentService.TIP_INDICATOR);
-                    NetworkHelper.hell = new NetworkHelper(this,ordererLocation,restaurantLocation,restaurantName,order,cost,tip);
-                }
-
-
-
-
-            if(true){//order taken
-
-                Intent broadcastIntent = new Intent();
-                broadcastIntent.setAction(ResponseReceiver.ACTION);
-                broadcastIntent.addCategory(Intent.CATEGORY_DEFAULT);
-                //indicate that a delivery has been accepted
-                broadcastIntent.putExtra(MainActivity.ACTION_INDICATOR,MainActivity.DELIVERY_ACCEPTED_ACTION);
-                //broadcast the information and send the data back to the main activity
-                sendBroadcast(broadcastIntent);
-                //TODO:get the phone number and name of the person taking the request and push that into notification
-
+            } else {
+                String restaurantLocation = intent.getStringExtra(CommunicationIntentService.RESTAURANT_LOCATION_INDICATOR);
+                String ordererLocation = intent.getStringExtra(CommunicationIntentService.USER_LOCATION_INDICATOR);
+                String restaurantName = intent.getStringExtra(CommunicationIntentService.RESTAURANT_NAME_INDICATOR);
+                String order = intent.getStringExtra(CommunicationIntentService.ORDER_INDICATOR);
+                String cost = intent.getStringExtra(CommunicationIntentService.COST_INDICATOR);
+                String tip = intent.getStringExtra(CommunicationIntentService.TIP_INDICATOR);
+                NetworkHelper.hell = new NetworkHelper(this, ordererLocation, restaurantLocation, restaurantName, order, cost, tip);
             }
-
-        }catch(Exception e){
-
-        }
 
 
     }

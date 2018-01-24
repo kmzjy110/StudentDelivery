@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
      * send a notification for action
      * @param action the type of action for the notification (delivery accepted or received, based on the variables on top)
      */
-    public void sendNotification(String action) {
+    public void sendNotification(String action, String details) {
 
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this);
@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
             mBuilder.setContentTitle("You have received a delivery order.");
 
         }
-        mBuilder.setContentText("Enter app for details.");
+        mBuilder.setContentText(details);
 
 
         NotificationManager mNotificationManager =
