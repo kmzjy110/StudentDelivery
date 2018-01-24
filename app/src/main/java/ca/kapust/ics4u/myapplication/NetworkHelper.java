@@ -132,7 +132,7 @@ public class NetworkHelper {
         reason=2;
         IO.Options opts = new IO.Options();
         opts.forceNew = true;
-        //opts.reconnection = true;
+        opts.reconnection = false;
         //opts.reconnectionAttempts=5;
         //opts.reconnectionDelay = 5;
         //opts.query = "auth_token=" + authToken;
