@@ -66,6 +66,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
+
+    //Create a new socket
     private Socket socket;
     // UI references.
     private AutoCompleteTextView mEmailView;
@@ -221,22 +223,27 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-
+                //set the options of the connection
                 IO.Options opts = new IO.Options();
                 opts.forceNew = true;
+                //try creating a socket using these options and address
                 try {
                     socket = IO.socket(NetworkHelper.defaultIp, opts);
                 } catch (URISyntaxException e) {
                     e.printStackTrace();
                 }
+                //When the socket connects
                 socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
 
                     @Override
                     public void call(Object... args) {
+                        //try place data inside the json object
                         JSONObject data = new JSONObject();
                         try {
+                            //place email and encrypted password
                             data.put("email",email);
                             data.put("password",encryptPwd(password));
+                            //send to the server that the client would like to login
                             socket.emit("login", data);
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -244,17 +251,19 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     }
 
                 }).on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
-
+                    //when the socket disconnects
                     @Override
                     public void call(Object... args) {}
 
                 });
+                //if the login is successful enter the  app
                 socket.on("success", new Emitter.Listener() {
                     @Override
                     public void call(Object... args) {
-
+                        //extract the JSON data from the object received
                         JSONObject data = (JSONObject)args[0];
                         try {
+
                             final String id = data.getString("id");
                             //turn off show progress
                             LoginActivity.this.runOnUiThread(new Runnable() {
@@ -265,6 +274,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                     showProgress(false);
                                 }
                             });
+                            //disconnect from the server
                             socket.disconnect();
                             //go into mainactivity
                             startActivity(new Intent(LoginActivity.this,MainActivity.class));
@@ -277,6 +287,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     }
 
                 });
+                //if the login fails tell the user the password is incorrect
                 socket.on("fail", new Emitter.Listener() {
                     @Override
                     public void call(Object... args) {
@@ -284,14 +295,17 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         LoginActivity.this.runOnUiThread(new Runnable(){
                             @Override
                             public void run() {
+                                //set the password view to inform the user's password is incorrect
                                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                                 mPasswordView.requestFocus();
                                 showProgress(false);
                             }});
+                        //disconnect from the server
                         socket.disconnect();
                     }
 
                 });
+                //initialize the connection
                 socket.connect();
 
 

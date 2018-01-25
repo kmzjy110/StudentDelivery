@@ -35,8 +35,6 @@ public class RequestOrderFragment extends Fragment {
        ((TextView)layout.findViewById(R.id.orderText)).setText("");
         ((TextView)layout.findViewById(R.id.costText)).setText("");
         ((TextView)layout.findViewById(R.id.tipText)).setText("");
-
-
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

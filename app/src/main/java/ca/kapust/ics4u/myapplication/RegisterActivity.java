@@ -23,6 +23,7 @@ import io.socket.emitter.Emitter;
 public class RegisterActivity extends AppCompatActivity {
 
     static RegisterActivity current;
+    //create a new socket
     private Socket socket;
     private EditText mFirstName;
     private EditText mLastName;
@@ -65,10 +66,11 @@ public class RegisterActivity extends AppCompatActivity {
         final String email = mEmail.getText().toString();
         String phoneNum = mPhoneNum.getText().toString();
         String bday = mBirthday.getText().toString();
-
+        //checking for validity of all data
         boolean reg = false;
         int counter =0;
         String temp="";
+        //validity of the phone number
         for(int i =0;i<phoneNum.length();i++){
             for(int j=0;j<10;j++){
                 String let = ""+phoneNum.charAt(i);
@@ -78,7 +80,7 @@ public class RegisterActivity extends AppCompatActivity {
                 }
             }
         }
-        //checking for validity of all data
+
         final String phoneNumber = temp;
         if(counter!=10&&counter!=11){
             mPhoneNum.setError("Not a valid phone number");
@@ -87,6 +89,7 @@ public class RegisterActivity extends AppCompatActivity {
         }
         counter =0;
         temp="";
+        //validity of the birthday
         for(int i =0;i<bday.length();i++){
             for(int j=0;j<10;j++){
                 String let = ""+bday.charAt(i);
@@ -102,55 +105,63 @@ public class RegisterActivity extends AppCompatActivity {
             reg=true;
         }
         final String birthday = temp;
+        //validity of the first name
         if(fName.length()<1){
             mFirstName.setError("Field is required");
             mFirstName.requestFocus();
             reg=true;
         }
+        //validity of the last name
         if(lName.length()<1){
             mLastName.setError("Field is required");
             mLastName.requestFocus();
             reg=true;
         }
+        //validity of the password
         if(!isPasswordValid(password)){
             reg=true;
             mPasswordView.setError("Password doesn't meet requirements");
             mPasswordView.requestFocus();
         }else{
+            //validity of the confirmation password
         if(!password.equals(confirmPassword)){
             mConfirmPasswordView.setError("Passwords don't match");
             mConfirmPasswordView.requestFocus();
             reg=true;
         }}
+        //validity of the email
         if(!(email.contains("@")&&email.contains("."))){
             mEmail.setError("Not a valid email");
             mEmail.requestFocus();
             reg=true;
         }
-
-
-
+        //if all the data is valid
         if(!reg){
-
+            //set the setting for the connection
         IO.Options opts = new IO.Options();
         opts.forceNew = true;
         try {
+            //try set the connection and include the ip
             socket = IO.socket(NetworkHelper.defaultIp, opts);
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
+        //when the socket connects
         socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
 
             @Override
             public void call(Object... args) {
+                //create a JSON object
                 JSONObject data = new JSONObject();
                 try {
+                    //place all the info into the object
                     data.put("email",email);
                     data.put("password",LoginActivity.encryptPwd(password));
                     data.put("firstName",fName);
                     data.put("lastName",lName);
                     data.put("phoneNumber",phoneNumber);
                     data.put("birthday",birthday);
+                    //send the registration data
                     socket.emit("register", data);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -158,34 +169,37 @@ public class RegisterActivity extends AppCompatActivity {
             }
 
         }).on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
-
+            // when the socket disconnects
             @Override
             public void call(Object... args) {}
 
         });
+        //when the registration is a success
         socket.on("success", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
-
-
-                //Run login code here
+                //Run go the the login page
                 startActivity(new Intent(RegisterActivity.this,LoginActivity.class));
-                
+                //disconnect from the server
                 socket.disconnect();
             }
 
         });
+        //when the registration fails
         socket.on("fail", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
+                //get the reason for the error
                 JSONObject data = (JSONObject)args[0];
                 try {
                     String error = data.getString("error");
+                    //if the reason for the error is that the email is already used
                     if(error.equals("users.email")){
                        RegisterActivity.this.runOnUiThread(new Runnable(){
 
                             @Override
                             public void run() {
+                                //inform the user that the email is already in use
                                 mEmail.setError("Email is already used");
                                 mEmail.requestFocus();
                             }});
@@ -193,12 +207,14 @@ public class RegisterActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                //disconnect from the server
                 socket.disconnect();
 
 
             }
 
         });
+        //establish a connection with the server
         socket.connect();
         }
     }

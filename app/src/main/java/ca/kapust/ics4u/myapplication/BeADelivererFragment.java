@@ -38,6 +38,7 @@ public class BeADelivererFragment extends Fragment {
 
             @Override
             public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                // if the user doesn't want to be a deliverer anyone disconnect and destroy the network helper
                 if(!isChecked){
                     NetworkHelper.hell.destroy();
                     NetworkHelper.hell=null;

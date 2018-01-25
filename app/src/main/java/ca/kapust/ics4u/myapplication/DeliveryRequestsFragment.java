@@ -90,6 +90,7 @@ public class DeliveryRequestsFragment extends Fragment {
                     data.remove(buttonIndex-minIndex);
                     maxIndex--;
                     transactFragment(newInstance(),true);
+                    //tell the server to accept
                     NetworkHelper.hell.accept(Integer.parseInt(id));
                 }
             });

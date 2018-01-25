@@ -49,14 +49,22 @@ public class CommunicationIntentService extends IntentService {
 
 
     }
-    public void sentOrder(){
 
+    /**Creates a notification
+     *creates a request to send in the notification with the deliverers info
+     */
+    public void sentOrder(){
         Intent broadcastIntent = new Intent();
         broadcastIntent.setAction(ResponseReceiver.ACTION);
         broadcastIntent.addCategory(Intent.CATEGORY_DEFAULT);
         broadcastIntent.putExtra(MainActivity.ACTION_INDICATOR,MainActivity.DELIVERY_SENT_ACTION);
         sendBroadcast(broadcastIntent);
     }
+
+    /** Creates an order field in the delivery requests section
+     * creates a request to send in the intent to make the field
+     * @param data the data of the order
+     */
     public void createDeli(JSONObject data) {
         try {
 
